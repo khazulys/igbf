@@ -7,7 +7,9 @@ import random
 from telebot.types import InlineKeyboardButton, ForceReply, InlineKeyboardMarkup, CallbackQuery
 from urllib.parse import unquote
 from threading import Thread
+from keep_alive import keep_alive
 
+keep_alive()
 bot = telebot.TeleBot('6777370057:AAFH6G5iqiaBloief_xk356wz3T7uPK7R4g')
 
 user_states = {}
