@@ -1,3 +1,2 @@
-requests
-PyTelegramBotAPI
-flask
+requests==2.31.0
+pytelegrambotapi==4.12.0
