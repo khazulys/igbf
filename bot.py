@@ -7,9 +7,9 @@ import random
 from telebot.types import InlineKeyboardButton, ForceReply, InlineKeyboardMarkup, CallbackQuery
 from urllib.parse import unquote
 from threading import Thread
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 
-keep_alive()
+#keep_alive()
 bot = telebot.TeleBot('6777370057:AAFH6G5iqiaBloief_xk356wz3T7uPK7R4g')
 
 user_states = {}
@@ -336,8 +336,8 @@ def main_crack(chat_id, message_id):
                 #print(err)
                 #os.remove('usernames.txt')
                 
-def start_bot():
-  bot.infinity_polling(timeout=20, long_polling_timeout=10)
+#def start_bot():
+  #bot.infinity_polling(timeout=20, long_polling_timeout=10)
   
 if __name__=="__main__":
   os.system('clear')
@@ -345,4 +345,5 @@ if __name__=="__main__":
     os.remove(usernames.txt)
     
   print('bot running!')
-  Thread(target=start_bot).start()
+  bot.polling()
+  #Thread(target=start_bot).start()
