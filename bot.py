@@ -333,13 +333,11 @@ def main_crack(chat_id, message_id):
                 #print(err)
                 #os.remove('usernames.txt')
                 
-def start_bot():
-  bot.infinity_polling(timeout=20, long_polling_timeout=10)
-  
+
 if __name__=="__main__":
   os.system('clear')
   if os.path.exists('usernames.txt'):
     os.remove(usernames.txt)
     
   print('bot running!')
-  Thread(target=start_bot).start()
+  bot.infinity_polling()
