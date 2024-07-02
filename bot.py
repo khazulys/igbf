@@ -64,10 +64,13 @@ def show_help(message):
 @bot.message_handler(func=lambda message:message.text == '!set')
 def show_help(message):
   chat_id = message.chat.id
+  markup = InlineKeyboardMarkup()
+  markup.add(InlineKeyboardButton('Delete', callback_data='delete')
+             
   if os.path.exists('cookie.txt'):
     bot.send_chat_action(chat_id, 'typing')
     time.sleep(1)
-    bot.reply_to(message, 'Your cookie file is exists!')
+    bot.reply_to(message, 'Your cookie file is exists!', reply_markup=markup)
   else:
     markup = ForceReply(selective=False)
     bot.send_chat_action(chat_id, 'typing')
@@ -146,6 +149,12 @@ def callback_inline(call: CallbackQuery):
     bot.edit_message_text('Send me a username target!', chat_id, message_id)
     
     user_states[chat_id]='await username'
+
+  elif call.data == 'delete:
+      os.remove('cookie.txt')
+      bot.send_chat_action(chat_id, 'typing')
+      time.sleep(1)
+      bot.send_message(chat_id,'Your cookie has been delete. type *!set* for set your cookie again.', parse_mode='Markdown')
 
 @bot.message_handler(func=lambda message: user_states.get(message.chat.id, None) == 'await username')
 def get_target(message):
