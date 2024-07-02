@@ -126,7 +126,7 @@ def start_crack(message):
       teks = f"Login successfully!\nLogin as *{username}*.\n\nYou want crack from?"
       bot.send_chat_action(chat_id, 'typing')
       time.sleep(1)
-      bot.reply_to(message, teks, parse_mode='Markdown', reply_markup=markup)
+      bot.reply_to(chat_id, teks, parse_mode='Markdown', reply_markup=markup)
     else:
       bot.send_chat_action(chat_id,'typing')
       time.sleep(1)
