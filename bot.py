@@ -240,7 +240,7 @@ def get_target(message):
     last_message = bot.send_message(chat_id, 'Main crack will be starting!').message_id
     time.sleep(0.5)
     
-    main_crack(chat_id, last_message)
+    main_crack(chat_id, last_message, clean_cookie)
       #(chat_id, response.json().get('users')["username"])
 def save_oke(file):
   with open('hacked.txt','a') as files:
