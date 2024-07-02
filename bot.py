@@ -354,7 +354,8 @@ if __name__=="__main__":
   os.system('clear')
   try:
     os.remove('usernames.txt')
-  
+  except FileNotFoundError:
+    pass
   print('bot running!')
   bot.infinity_polling()
   #Thread(target=start_bot).start()
