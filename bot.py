@@ -352,8 +352,9 @@ def main_crack(chat_id, message_id, cookie):
   
 if __name__=="__main__":
   os.system('clear')
-  try:os.remove('usernames.txt')
-    
+  try:
+    os.remove('usernames.txt')
+  
   print('bot running!')
   bot.infinity_polling()
   #Thread(target=start_bot).start()
