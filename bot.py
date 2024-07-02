@@ -116,7 +116,7 @@ def start_crack(message):
     
     
     #session = requests.Session().max_redirects=100
-    response = requests.get(url, cookies=clean_cookie, headers=headers, allow_redirects=False)
+    response = requests.get(url, cookies=clean_cookie, headers=headers)
     #bot.send_message(chat_id, response.text)
     if response.status_code == 200:
       username = response.json()['user']['username']
