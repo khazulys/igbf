@@ -297,7 +297,7 @@ def main_crack(chat_id, message_id, cookie):
             }
             
             response_log = requests.post(login_url, headers=headers, data=data, allow_redirects=False)
-            time.sleep(1)
+            time.sleep(2)
             
             
                 
