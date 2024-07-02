@@ -250,7 +250,7 @@ def save_cp(file):
   with open('checkpoint.txt','a') as files:
     return files.write(file)
     
-def main_crack(chat_id, message_id):
+def main_crack(chat_id, message_id, cookie):
     request_count = 0
     headers = {
         'User-Agent': 'Instagram 123.0.0.26.115 Android',
@@ -259,6 +259,7 @@ def main_crack(chat_id, message_id):
         'Accept-Language': 'en-US',
         'X-IG-Capabilities': '3brTvw==',
         'X-IG-Connection-Type': 'WIFI',
+        "X-CSRFToken": cookie.get('csrftoken')
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Referer': 'https://www.instagram.com/',
         'Host': 'i.instagram.com'
@@ -272,7 +273,7 @@ def main_crack(chat_id, message_id):
         usr_name = username.strip()  # Menghilangkan newline
         
         url = f"https://i.instagram.com/api/v1/users/web_profile_info/?username={usr_name}"
-        response = requests.get(url, headers=headers, allow_redirects=False)
+        response = requests.get(url, headers=headers, cookies=cookies,allow_redirects=False)
         time.sleep(1)
         print(response.text)
         if response.status_code == 200:
