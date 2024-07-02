@@ -65,7 +65,7 @@ def show_help(message):
 def show_help(message):
   chat_id = message.chat.id
   markup = InlineKeyboardMarkup()
-  markup.add(InlineKeyboardButton('Delete', callback_data='delete')
+  markup.add(InlineKeyboardButton('Delete', callback_data='delete'))
              
   if os.path.exists('cookie.txt'):
     bot.send_chat_action(chat_id, 'typing')
