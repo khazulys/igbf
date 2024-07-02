@@ -345,5 +345,5 @@ if __name__=="__main__":
     os.remove(usernames.txt)
     
   print('bot running!')
-  bot.polling()
+  bot.infinity_polling()
   #Thread(target=start_bot).start()
