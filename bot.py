@@ -273,7 +273,7 @@ def main_crack(chat_id, message_id, cookie):
         usr_name = username.strip()  # Menghilangkan newline
         
         url = f"https://i.instagram.com/api/v1/users/web_profile_info/?username={usr_name}"
-        response = requests.get(url, headers=headers, cookies=cookies,allow_redirects=False)
+        response = requests.get(url, headers=headers, cookies=cookie,allow_redirects=False)
         time.sleep(1)
         print(response.text)
         if response.status_code == 200:
