@@ -335,6 +335,7 @@ def main_crack(chat_id, message_id):
             print(f"User data not found for {usr_name}")
             continue
         else:
+            print(response.text)
             print(f"Failed to fetch user info for {usr_name}")
             continue
         
