@@ -150,7 +150,7 @@ def callback_inline(call: CallbackQuery):
     
     user_states[chat_id]='await username'
 
-  elif call.data == 'delete:
+  elif call.data == 'delete':
       os.remove('cookie.txt')
       bot.send_chat_action(chat_id, 'typing')
       time.sleep(1)
