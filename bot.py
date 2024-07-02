@@ -95,47 +95,47 @@ def start_crack(message):
   chat_id = message.chat.id
   try:
     cookie = load_cookie()
+    url = 'https://i.instagram.com/api/v1/accounts/current_user/'
+    ig_cookie = change_to_json(cookie)
+    cookies = json.loads(ig_cookie)
+    clean_cookie = {key: value.replace('\n', '') for key, value in cookies.items()}
+    
+    #bot.send_message(chat_id, clean_cookie.get('csrftoken'))
+    headers = {
+      'User-Agent': 'Instagram 123.0.0.26.115 Android',
+      'Accept': '*/*',
+      'Accept-Encoding': 'gzip, deflate',
+      'Accept-Language': 'en-US',
+      'X-IG-Capabilities': '3brTvw==',
+      'X-IG-Connection-Type': 'WIFI',
+      "X-CSRFToken": clean_cookie.get('csrftoken'),
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Referer': 'https://www.instagram.com/',
+      'Host': 'i.instagram.com'
+    }
+    
+    
+    #session = requests.Session().max_redirects=100
+    response = requests.get(url, cookies=clean_cookie, headers=headers, allow_redirects=False)
+    #bot.send_message(chat_id, response.text)
+    if response.status_code == 200:
+      username = response.json()['user']['username']
+      markup = InlineKeyboardMarkup(row_width=2)
+      markup.add(InlineKeyboardButton('Followers', callback_data='followers'),
+                InlineKeyboardButton('Likes Post', callback_data='likes'))
+      teks = f"Login successfully!\nLogin as *{username}*.\n\nYou want crack from?"
+      bot.send_chat_action(chat_id, 'typing')
+      time.sleep(1)
+      bot.reply_to(message, teks, parse_mode='Markdown', reply_markup=markup)
+    else:
+      bot.send_chat_action(chat_id,'typing')
+      time.sleep(1)
+      bot.reply_to(chat_id, response.json())
   except FileNotFoundError as err:
     bot.send_chat_action(chat_id, 'typing')
     time.sleep(1)
     bot.reply_to(message, err)
     
-  url = 'https://i.instagram.com/api/v1/accounts/current_user/'
-  ig_cookie = change_to_json(cookie)
-  cookies = json.loads(ig_cookie)
-  clean_cookie = {key: value.replace('\n', '') for key, value in cookies.items()}
-  
-  #bot.send_message(chat_id, clean_cookie.get('csrftoken'))
-  headers = {
-    'User-Agent': 'Instagram 123.0.0.26.115 Android',
-    'Accept': '*/*',
-    'Accept-Encoding': 'gzip, deflate',
-    'Accept-Language': 'en-US',
-    'X-IG-Capabilities': '3brTvw==',
-    'X-IG-Connection-Type': 'WIFI',
-    "X-CSRFToken": clean_cookie.get('csrftoken'),
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'Referer': 'https://www.instagram.com/',
-    'Host': 'i.instagram.com'
-  }
-  
-  
-  #session = requests.Session().max_redirects=100
-  response = requests.get(url, cookies=clean_cookie, headers=headers, allow_redirects=False)
-  #bot.send_message(chat_id, response.text)
-  if response.status_code == 200:
-    username = response.json()['user']['username']
-    markup = InlineKeyboardMarkup(row_width=2)
-    markup.add(InlineKeyboardButton('Followers', callback_data='followers'),
-              InlineKeyboardButton('Likes Post', callback_data='likes'))
-    teks = f"Login successfully!\nLogin as *{username}*.\n\nYou want crack from?"
-    bot.send_chat_action(chat_id, 'typing')
-    time.sleep(1)
-    bot.reply_to(message, teks, parse_mode='Markdown', reply_markup=markup)
-  else:
-    bot.send_chat_action(chat_id,'typing')
-    time.sleep(1)
-    bot.reply_to(chat_id, response.json())
     
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call: CallbackQuery):
