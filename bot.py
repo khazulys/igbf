@@ -259,7 +259,7 @@ def main_crack(chat_id, message_id, cookie):
         'Accept-Language': 'en-US',
         'X-IG-Capabilities': '3brTvw==',
         'X-IG-Connection-Type': 'WIFI',
-        "X-CSRFToken": cookie.get('csrftoken')
+        "X-CSRFToken": cookie.get('csrftoken'),
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Referer': 'https://www.instagram.com/',
         'Host': 'i.instagram.com'
