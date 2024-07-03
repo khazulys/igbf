@@ -136,7 +136,7 @@ def start_crack(message):
   except FileNotFoundError as err:
     bot.send_chat_action(chat_id, 'typing')
     time.sleep(1)
-    bot.reply_to(chat_id, err)
+    bot.reply_to(message, err)
     
     
 @bot.callback_query_handler(func=lambda call: True)
